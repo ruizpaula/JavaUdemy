@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <xhead>
+        <title>Inicio</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+        <script src="https://kit.fontawesome.com/f90d3bf50d.js" crossorigin="anonymous"></script>
+    </head>
+    <style>
+        body {
+            font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    </style>
+    <body>
+
+        <header id="main-header" class="py-2 bg-primary text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h1><i class="bi bi-cart-fill"></i> Bienvenido a la app de inventario !!</h1>
+                        <h3></i>Universidad Serigio Arboleda MINTIC 2022</h3>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="actions" class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a th:href="@{/agregar}" class="btn btn-success btn-block"
+                           data-toggle="modal" data-target="#agregarProductoModal">
+                            <i class="fas fa-plus"></i> Agregar Producto
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+
+        <section id="clientes">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Listado de Productos </h4>
+                            </div>
+                            <div th:if="${productos != null and !productos.empty}">
+                                <table class="table table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nombre</th>
+                                            <th>Precio</th>
+                                            <th>Inventario</th>
+                                            <th >acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="producto : ${productos}">
+                                            <td th:text="${producto.codigo}"></td>
+                                            <td th:text="${producto.nombre}"></td>
+                                            <td th:text="${producto.precio}"></td>
+                                            <td th:text="${producto.inventario}"></td>
+                                            <td>
+                                                <a th:href="@{/editar/} + ${producto.codigo}" class="btn btn-primary" ><i class="bi bi-pencil-fill"></i> Editar</a> 
+                                                <a th:href="@{/eliminar(codigo=${producto.codigo})}" onclick="alerta()" class="btn btn-danger"><i class="bi bi-trash3-fill"></i> Eliminar</a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div th:if="${productos == null or productos.empty}">
+                                La lista de productos está vacía
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-warning">
+                                <h5 class="card-title"><i class="bi bi-file-text"></i> Informe del Inventario</h5>
+                            </div>
+                            <div class="card-body">
+                                <p  th:text="${informe}" type="currency"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+        <script>
+
+            function alerta() {
+                Swal.fire({
+                    title: 'Estas seguro ?',
+                    text: "No seras capaz de revertir esto",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, eliminar!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                                'Eliminado!',
+                                'El producto ha sido eliminado.',
+                                'success'
+                                )
+                    } else {
+
+                    }
+                })
+            }
+
+
+
+
+        </script>
+    </body>
+</html>
